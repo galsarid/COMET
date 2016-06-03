@@ -1,0 +1,191 @@
+
+This file contains a summary of the descriptions and mappings of each 
+subroutine and function in the sources directory (except for main.f).
+The order ia alphabetical.
+'->' indicates the subroutines & functions called by the specific
+subroutine/function.
+'<-' indicates the subroutines & functions that call the specific
+subroutine/function.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+AXISFIT(TIME0):
+Power-law fit, for A and B, within an interval [TINIT,TEND].
+This should follow a fit to the orbital data - semi-major axis.
+-> None.
+<- ENDSTP.
+
+COMPOS:
+Calculate composition mass fractions for given T and RHO.
+-> SGTSL.
+<- Main.
+
+CONSTANTS:
+In this subroutine we define the parameters of all different
+species that the comet is comprised of.
+-> None.
+<- Main.
+
+DIVIS(MODIV,I):
+MODIV=0 : Add two adjacent shells and divide the new shell into 2
+          (nr. of grid points remains unchanged).
+MODIV=1 : Divide shell in to 2 (nr. of grid points increases by 1).
+-> None.
+<- ENDSTP, Main.
+
+ECCENFIT(TIME0):
+Power-law fit, for A and B, within an interval [TINIT,TEND].
+This should follow fit to the orbital data - eccentricity.
+-> None.
+<- ENDSTP.
+
+ENDSTP(IPRINT,INDRED,ITIMEA,ITIMER,NMERGE,NRED,
+       NIT,MIT,DIST0):
+Determines parameters for the next time step calculations.
+-> SETDIST, PRINT, PROFILE, SURFL, DIVIS, SMERGE, GRIDEF, HYDRO, MODEL.
+<- Main.
+
+EOS(RO,PS,DPDRO):
+Provides equation of state for the solid matrix.
+-> None.
+<- HYDRO.
+
+FLUX:
+Calculate heat fluxes and their derivatives as functions of the temperature.
+-> THCOND, SURFL, DIVIS.
+<- Main.
+
+GRIDEF(DELTAV):
+Move grid boundaries inward by DELTAV (provided the 5 innermost
+shells are large enough). First, boundaries are advanced down to
+the innermost shell; when it becomes too small - down to the second
+shell, and so on, until the the fifth. Old shells are stored in
+DVP(I).
+-> None.
+<- ENDSTP.
+
+HYDRO(PS,RHO,DM,DV,IMAXP1,PI4,EPSX1):
+Calculates hydrostatic structure by adjusting volumes (grid points).
+-> EOS, SGTSL.
+<- ENDSTP.
+
+INPUT:
+This subroutine initializes arrays and matrices, reads the data
+file (comin) and builds an initial model if NMODEL is negative.
+Otherwise - reads a model from the comodi file.
+After the model is built - prints data to output files.
+-> PRINT.
+<- Main.
+
+MFLUX:
+Calculate mass fluxes (mass per unit time) - vapor and gas -
+and their derivatives for given T, RHO and fixed mass fractions.
+Take into account Knudsen and Reinolds flow, depending on the
+interaction between the material and the pores.
+-> None.
+<- Main.
+
+MODEL:
+Write data into COMODO - model output file.
+-> None.
+<- ENDSTP, Main.
+
+POR(ROA,ROC,RODUST,RHOICE,RHODUS,MMAX,ROSGI,RHOSOL):
+Calculate value of porosity.
+-> None.
+<- DIVIS, SMERGE, GRIDEF, COMPOS, INPUT, ENDSTP.
+
+PRINT:
+Print out full data to COMOUT file.
+-> STRESS, TSTRESS, TABLE, SURFL.
+<- Main, ENDSTP, SURFL, INPUT.
+
+PROFILE:
+Prepare and print data to COMPROF - profile output file.
+-> None.
+<- ENDSTP.
+
+RTBIS(x1,u,xi,usol,alfa,beta,eta,H,Tm,cw):
+Perform root finding by the bisection method, to the function defined by
+UFUNC.
+-> None.
+<- DIVIS, SMERGE, GRIDEF.
+
+SETDIST(DISPLOT):
+Fills the displot array. The array's values represent heliocentric
+distance, where the first 100 range from aphelion to perihelion.
+The next 100 values mirror the first 100 values.
+-> None.
+<- ENDSTP.
+
+SGTSL(N,C,D,E,B,INFO):
+Matrix inverse.
+-> None.
+<- Main, COMPOS, HYDRO.
+
+SMERGE(I):
+Merge two shells into one. We do it in case one shell is much
+Thinner than the next one.
+-> None.
+<- ENDSTP.
+
+SOURCE:
+Calculate vapor and gas gains or losses, QV(I) and QG(I),
+due to sublimation and crystallization, and energy gain, S(I),
+due to crystallization and radioactive decay.
+-> SUBLI.
+<- Main.
+
+STRESS(IP1,PI43,PS,RS,SRR,STT):
+-> None.
+<- PRINT.
+
+SUBLI(AP,BP,TI,T0I,RO,QMAX,
+     STOV,AIB,PI,PORI,QVI,DQV1I,
+     DQV2I,DQVDTI):
+-> None.
+<- SOURCE.
+
+SURFL(TIP,PP,JM0 ,EMIS,SIG,SFLUX,PI,TNS,XIN,DXIN,
+     KMAX,HSUB,QTOT,PZERO,EXPT,AIB,TETA,DRMAX,
+     FIN,DFIN,NTIME,NPRINT,IB,EPSX1,EPSX2,
+     PQV,PFL,PXMFL,PAT,VAFLIP,DVFIPL,FSUR):
+Calculate fluxes (heat and mass) through a thin boundary layer,
+assuming steady state and plane parallel geometry.
+Input: pressure and temperature (PP, TIP) (at contact surface).
+Output: heat and mass fluxes (FIN, DFIN, XIN, DXIN).
+-> PRINT, TABLE.
+<- PRINT, ENDSTP.
+
+TABLE(KDI,IL,IP,IJ,PRIMAT,AM,INDN):
+-> None.
+<- PRINT, ENDSTP.
+
+THCOND(IO,CKA,CKC,CKD,DCKADT,DCKCDT,DCKDDT):
+Calculate thermal conductivity coefficients, corrected for porosity.
+-> None.
+<- FLUX.
+
+TSTRES(IP1,PI43,TS,RS,TSR,TST):
+-> None.
+<- PRINT.
+
+UFUNC(T,u,xi,usol,alfa,beta,eta,H,Tm,cw):
+Heat function for root finding (RTBIS).
+-> None.
+<- RTBIS.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

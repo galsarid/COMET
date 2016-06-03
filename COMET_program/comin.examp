@@ -1,0 +1,118 @@
+          COMET EVOLUTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+NMODEL                -10          % Neg.-build initial model; pos.-read model * from 'comodi'.
+RUNM                    0          % Run mode: =0 - 1D (subsolar, fast-rotator)); >0 - quasi-3D (not fully implemented yet). 
+%%%%%%% OUTPUT: %%%%%%%%%%%%%%%%%%%%
+HANGN                   1          % Number of hour angle elements. MUST be in the range [1,180]. If not a whole divisor of 360, will be rounded-up to closest integer - see MAIN.
+NPRINT                100          % Print table on 'comout' every * time steps (set neg. to print iterations).
+NSAVE            60000000          % Save model on 'comodo' every  * time steps.
+NSTEP                 100          % Print output line on 'comout' every * time steps.
+ITABLE                100          % Print table lines from IMAXP1-ITABLE to IMAXP1.
+%%%%%%% FLAGS: %%%%%%%%%%%%%%%%%%%%%
+KP                      2          % Flow type: 0 - Knudsen; 1 - Knudsen and Poiseuille interp. (perfect mix); 2 - Trans. to Poiseuille at low Knudsen (immiscible flows).
+IOP                     0          % Orbital parameters input: 0 for comin file input; 1 for smooth time-dependence (AXISFIT & ECCENFIT in main program).
+ICORR                   1          % Correction for surface-to-volume ratio (power law SD of pores): 0 for none; 1 for implementation (input ALFPS & XPS below). 
+IHYDRO                  0          % Set > 0 for calculation of hydrostatic equilibrium structure.
+EOSF                    0          % Scheme for equation of state (hydros. calc.): B-M (0), Vinet (1), Shanker (2). See EOS sub. for description.
+IZONE1                  1          % Scheme for rezoning shells: 0 for SMERGE; 1 for DIVIS (usually 1). See sub. for explanation. 
+IZONE2                  0          % Scheme for erosion calculation: 0 for SMERGE; 1 for GRIDEF (usually 0). See sub. for explanation.
+IIMPAC                  0          % Set > 0 for calculation of impact-induced effect.
+%%%%%%% TEMPORAL: %%%%%%%%%%%%%%%%%%
+NTIMAX           50000000          % Maximum number of time steps for the run.
+TIME0           -1.                % Initial time [sec] (zero if neg.).
+TIMEFIN               0.0          % Final time, to end program [sec] (ignored if = 0.0).
+ORBFIN                 10          % Final orbit to be calculated, to end program (ignored if = 0).
+ITMODE                  0          % Time step scheme determination. 0 for t=t(FI) (FI = 'time' variable); 1 for FI=FI(t) (fixed time steps). Usually 0.
+NTDAY                1000          % Number of time steps for one full day (spin), for ITMODE = 1.
+%%%%%%% NUMERICS: %%%%%%%%%%%%%%%%%%
+KMAX                   10          % Maximum iterations allowed.
+KN                      5          % Nr. of truncated iterations allowd - See explanation in main program.
+DFI             1000.0             % Orbital angle step (from which time step is determined).
+DFIMAX          500.0              % Maximal orbital angle step allowed.
+DTMAX           1000000.0          % Maximal time step allowed [sec].
+EPSTIM          0.15               % Optimal temperature correction for time step (0.15 orig.).
+EPSX1           0.00000000010      % Convergence accuracy for temperature (/1000 orig.).
+EPSX2           0.00000001000      % Convergence accuracy for densities (pressures) (/1000 orig.).
+EPSHY           0.000001           % Convergence accuracy for hydrostatic calculation. 
+FAC             0.20               % Time step is decreased by this factor, if problems arise.
+FACTIM          1.25               % Time step is increased by this factor, if corrections are small.
+PAT             1000.00            % Use boundary layer method if outer pressure exceeds this [dyn/cm^2].
+PRECX           0.0000010000       % Required precision in mass conservation (locally).
+IMAXP1                200          % Number of grid shells (should be < parameter IMX).
+ISL                   700          % Number of inner grid shells in core (geometric series), if < IMAXP1.
+JMAX                    0          % Maximum number of grid points in boundary layer (~0.1*IMAXP1)
+DELR            10.0               % Uniform thickness of IMAXP1-ISL outer mass shells [cm], if IMAXP1>ISL.
+QDM             1.0200             % Geometric factor for mass shell increase (>1) towards center (initial model).
+%%%%%%% PHYSICS: %%%%%%%%%%%%%%%%%%%
+AXIS            46889100000000.0   % Semi-major axis [cm] (a=3.85 AU).
+ECCEN           0.000              % Eccentricity ().
+ALB             0.040              % Albedo ().
+EMIS            0.90               % Emissivity (may be as 1-ALB, if unknown).
+PROT            0.0                % Spin period [sec] (). If negative, it is stated as a fraction of the orbital period.
+ALAT            0.0                % Cometocentric latitude angle [deg]. Set to 0.0, as default.
+DECLIN          0.0                % Declination angle of spin axis [deg]. Set to 0.0, as default.
+JANGLE          0.0                % Angle between the spin axis projection and comet-sun line in perihelion, on the orbit plane [deg]. Set to 0.0, as default.
+RADIUS          1000000.0          % Initial radius [cm] (10 km).
+RO              0.50               % Initial (uniform) density [g/cm^3] ().
+TT              60.0               % Initial (uniform) temperature [K] (may be set as equilibrium radiative temperature, at aphelion).
+TETA            0.5                % Pore radius [cm] (initial).
+TETAB           0.500              % Pore radius in boundary layer [cm] (initial).
+ALFPS           3.5                % Exponent for power-law distribution of pore sizes (for all shells, initially; usually between 3-4).
+XPS             10000.0            % Pore size range (rp_max/rp_min).
+XPCR            4.0                % Critical pressure (strength) = 10^XPCR [dyn/cm^2].
+TZERO           70.0               % Ignore crystallization below this temperature [K].
+ADMAX           0.001              % Maximal dust grain radius (cm).
+BDUST           0.500              % Dust drag efficiency parameter (see subroutine MFLUX). 
+RO0FAC          0.80               % Ratio of RO0 (EOS parameter) to the central density, RHO(2). Input parameter to find PK, for setting the EOS coef.
+EFRAD           0.0                % Coefficient of effective thermal radiation, for dust conductivity calculation (see subroutine THCOND).
+HERTZF          0.01               % Hertz factor, for reduction of thermal conductivity (the area of contact between material grains relative to the cross-sectional area) 
+PORCOL          0.8                % Upper limit on porosity, beyond which a "collapse" is considered (see ENDSTP).
+POREXP          0.05               % Lower limit on porosity, beyond which an "expansion" is considered (see ENDSTP).
+%%%%%%% COMPOSITION: %%%%%%%%%%%%%%%
+MMAX                    4          % Number of gas species to be considered (out of 9 --> CONSTANTS).
+Z1              0.0000             % (CO)       
+Z2              0.0000             % (CO2)
+Z3              0.0000             % (HCN)       
+Z4              0.0000             % (NH3)
+Z5              0.0000             % (C2H2)      Fractions of occluded gas species in the amorphous ice.
+Z6              0.0000             % (CH4)       This should be correlated with LG in dimfile.h and the  
+Z7              0.0000             % (H2S)       entries in subroutine CONSTANTS.
+Z8              0.0000             % (CH3OH)
+Z9              0.0000             % (C2H6)
+Z10             0.0000             % ()
+XAI             0.000              % Initial amorphous ice mass fraction.
+XCI             0.500              % Initial crystalline ice mass fraction.
+XDI             0.500              % Initial mass fraction of dust.
+ZAC             0.0                % Fraction of amorphous ice that does not crystallize (<1.0) / clathrate (crystalline) ice mass fraction flag (=1.0) 
+CLIMIT          0.15               % Maximum allowed fraction of gas in the clathrate hydrate phase, when building initial model.
+XSGI1           0.00000            %
+XSGI2           0.00000            %
+XSGI3           0.00000            % 
+XSGI4           0.00000            %
+XSGI5           0.00000            %             Initial mass fractions of ices (species other than water ice).
+XSGI6           0.00000            %             This should be correlated with LG in dimfile.h and the
+XSGI7           0.00000            %             entries in subroutine CONSTANTS.
+XSGI8           0.00000            %
+XSGI9           0.00000            %
+XSGI10          0.00000            %
+LMAX                    0          % Number of radioactive species (out of 6 --> CONSTANTS). 
+XRAD1           0.00000000         % Initial mass fraction of K40.
+XRAD2           0.0000000000       % Initial mass fraction of Th232.
+XRAD3           0.0000000000       % Initial mass fraction of U238.
+XRAD4           0.00000000000      % Initial mass fraction of U235.
+XRAD5           0.00000111         % Initial mass fraction of Al26.               This should be correlated with LR in dimfile.h
+XRAD6           0.00000234         % Initial mass fraction of Fe60.               and the entries in subroutine CONSTANTS.
+XRAD7           0.00000000         % Initial mass fraction of radionuclide 7.
+XRAD8           0.00000000         % Initial mass fraction of radionuclide 8.
+XRAD9           0.00000000         % Initial mass fraction of radionuclide 9.
+XRAD10          0.00000000         % Initial mass fraction of radionuclide 10.
+%%%%%%% OPTIONAL: %%%%%%%%%%%%%%%%%%
+%%%%%%% IMPACT (IIMPAC > 0): %%%%%%%
+NDI                     8          % Number of orbit, for which an impact is simulated.
+DDI             1.51               % Distance (on inbound lag of orbit NDI) from which surface energy is added, when an impact is simulated [AU].
+THICK           3000.0             % Thickness of layer removed ("depth" of crater), when an impact is simulated [cm].
+CRDIAM          20000.0            % Diameter of resulting crater, when an impact is simulated [cm].
+DELTDI          180.0              % Timescale for addition of surface energy (in Gaussian form), when an impact is simulated [sec].
+KENRAT          1.0                % Ratio of total kinetic energy of the projectile to that of DI's projectile, when an impact is simulated (see CONSTANTS).
+ENPART          1.0                % Energy partition factor (mechanical to heating), when an impact is simulated. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

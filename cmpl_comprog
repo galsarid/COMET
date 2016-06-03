@@ -1,0 +1,52 @@
+#!/bin/csh -f
+# A script to execute compilation of source files for subroutines & functions of comprog.  
+# Use: ./makecpl
+
+# USERS SHOULD (usually) CHANGE THE FOLLOWING!
+
+# This is the directory path containing the all files, incl. 'comin' file and 'make' file:
+set COMPROG_DIR = /Users/galsarid/Documents/COMET_code_dir/
+# This is the directory path containing the source files for the subroutines and functions:
+set SOURCES_DIR = /Users/galsarid/Documents/COMET_code_dir/src/
+# This is the fortran compiler command (usually f77 or g77):
+set FORTRAN = gfortran
+# These are the flags for the fortran compiler (-O# for opt., -o for output):
+set FFLAGS='-o'
+# This is the output executable filename:
+set OUT_EXEC = 'runprog.out'
+
+# These are the source files for subroutines called by 'main' (according to their invoke order). THIS SHOULD NOT BE CHANGED.
+set SOURCES1 = 'main.f constants.f input.f model.f endstp.f source.f flux.f mflux.f sgtsl.f compos.f print.f'
+# These are the source files for subroutines called by other subroutines.
+set SOURCES2 = 'divis.f eos.f gridef.f hydro.f profile.f smerge.f stress.f subli.f surfl.f table.f thcond.f tstres.f'
+# These are the source files for functions called by subroutines.
+set SOURCES3 = 'axisfit.f eccenfit.f por.f rtbis.f ufunc.f'
+# This is optional, for subroutines/functions to be added in the future.
+set SOURCES4 = 'impact.f seteos.f'
+
+
+# Go to the 'sources' directory:
+cd $SOURCES_DIR
+
+# Check if 'commonfile' &  'dimfile' exist in the directory:
+if ( ! -e commonfile.h ) then
+    echo "No commonfile.h present! Exiting."
+    cd $COMPROG_DIR
+    exit
+endif
+if ( ! -e dimfile.h ) then
+    echo "No dimfile.h present! Exiting."
+    cd $COMPROG_DIR
+    exit
+endif
+
+# Compile all sources to the output executable:
+$FORTRAN $FFLAGS $OUT_EXEC $SOURCES1 $SOURCES2 $SOURCES3 $SOURCES4
+# Move the output executable to the 'comprog' directory:
+mv $OUT_EXEC $COMPROG_DIR
+# Return to the 'comprog' directory:
+cd $COMPROG_DIR
+# Check if the output executable exists and write completion mesasge:
+if ( -e runprog.out ) then
+    echo "Compilation complete."
+endif

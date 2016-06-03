@@ -1,0 +1,262 @@
+This is a follow-up on the revisions made.
+
+20.7.06
+comet_prog.f = master_fanny.f.
+comet_prog.f: Do not run with &. Ctrl+z and 'bg' to send the job to the background.
+comet_prog.f: subroutine GRAPH was removed. 
+comet_prog.f: all references to _PGPLOT_ were removed. 
+
+23.7.06 
+comet_prog.f: Added subroutine EOS_coef. Added function RTBIS_COEF.
+comet_prog.f: Added call to EOS_COEF subroutine, in INPUT subroutine.
+comet_prog.f: Added variable 'PK' (the EOS coefficient) to newcommonfile.h, at declaration and common of PARAM.
+comet_prog.f: Added 'PK' to call to HYDRO.
+comet_prog.f: IHYDRO=1. TIMAX=1.5D17.
+comet_prog.f: Added variable 'RADIUS' (input from comin file) to newcommonfile.h, at declaration and common of PARAM.
+
+*** Each version of comprog.f has a date identifier, corresponding to the version preceding the changes of that date. ***
+
+21.2.07
+Directory last_ver: 
+Re-organize structure of comin file.
+Re-organized INPUT READ sequence from comin file.
+Added TIMEFIN to comin file, newcommonfile and main program. Added to INPUT READ sequence.
+Added STOP condition for time (TIMEFIN).
+
+22.2.07
+Directory last_ver:
+Re-organize structure of comin file.
+Added ORBFIN to comin file, newcommonfile and main program. Added to INPUT READ sequence.
+Added STOP condition for orbit number (ORBFIN).
+Moved ITMODE and NTDAY from DATA declaration in the beginning of main program to comin file. Added to INPUT READ sequence.
+Added ITMODE and NTDAY to newcommonfile.
+Removed refernces to ITMODE and NTDAY from subroutine name and calls for ENDSTP and FLUX.
+Moved IOP from DATA and PARAMETER declaration in ENDSTP to comin file. Added to INPUT READ sequence.
+Added IOP to newcommonfile.
+Added a shell script, 'run_comprog', for running runprog.out only with a declaration of the comin file. 
+Added a shell script, 'cpl_comprog', for compiling the fortran source code only with a declaration of the source file name.
+Added a shell script, 'rmv_comprog', for deleting the result files quickly.
+Added new COSXI calculation (from master_fanny.f) to main program (section: DETERMINE TIME STEP). Added JANGLE variable. 
+Moved DECLIN, ALAT AND JANGLE from DATA declaration in the beginning of main program to comin file. Added to INPUT READ sequence.
+Added DECLIN, ALAT AND JANGLE to newcommonfile.
+Revised AXISFIT and ECCENFIT a bit. 
+
+25.2.07
+Directiry last_ver:
+Changed variables in subroutines ENDSTP and SOURCE - ALF to ALFPS and X to XPS.
+Moved ALFPS and XPS from DATA declaration in SOURCE (ALF and X) and ENDSTP (X) to comin file. Added to INPUT READ sequence.
+Added IHYDRO to comin file, newcommonfile and main program. Added to INPUT READ sequence.
+Added if statement for IHYDRO in ENDSTP, before call to HYDRO.
+Added IZONE to comin file, newcommonfile and main program. Added to INPUT READ sequence.
+Added if statement for IZONE in ENDSTP, before calls to SMERGE and DIVIS.
+Added subroutine GRIDEF (from master_fanny.f) to main program.
+Added call to GRIDEF in ENDSTP (section: CALCULATE EROSION OF NUCLEUS). 
+Revised calculation of TET(I) in ENDSTP (section: CALCULATE HYDROSTATIC STRUCTURE).
+Changed names of files: newcommonfile.h -> commonfile.h; cdim.h -> dimfile.h. Declaration of files was changed throughout comprog.
+Compared and revised subroutines, up to INPUT (incl.), between master_fanny.f and comprog.f.
+Changed division scheme in subroutine INPUT from mass to volume (following master_fanny.f).
+
+27.2.07
+Directory last_ver:
+Compared and revised subroutines, from COMPOS to MODEL, between master_fanny.f and comprog.f.
+Compared and revised functions, POR, RTBIS, UFUNC, between master_fanny.f and comprog.f.
+Corrected formulae for A-ice conductivity (CKA and DCKADT) in subroutine THCOND - multiply instead of divide by by RHOICE.
+Corrected formulae for C-ice conductivity (CKC and DCKCDT) in subroutine THCOND - include influence of XM0 and CONDW (melt ice?).
+Moved PK and RO0 from DATA declaration in EOS to comin file. Added to INPUT READ sequence. Added PK and RO0 to commonfile.h. 
+Added INCLUDE of dimfile and commonfile to subroutine EOS. Changed header, DIMENSION DECLARATION and call of EOS.
+Moved EFRAD from DATA declaration in THCOND to comin file. Added to INPUT READ sequence. Added EFRAD to commonfile.h. 
+Added INCLUDE of dimfile and commonfile to subroutine THCOND. Changed header, DIMENSION declaration and call of THCOND.
+Removed the variable T from subroutines EOS and HYDRO (header, DIMENSION declaration and call). 
+Added INCLUDE of dimfile and commonfile to subroutine SETDIST. Removed AXIS, ECCEN and ONEAU from header and call of subroutine.
+Moved NGRPH to GRAPHICS section of comin file. 
+Adedd GRAPHICS variables to INPUT READ sequence.
+
+5.3.07
+Directory last_ver:
+Added variable IZONE2 to comin file, commonfile and main program (in INPUT READ sequence and sec. CALCULATE EROSION OF NUCLEUS in ENDSTP).
+Added to shell scripts 'run_comprog' & 'rmv_comprog a user-prompt for addition of a suffix to the result files (e.g., comout_1, comprof_t3, etc.).
+Directory last_ver/breakup:
+Saved each subroutine & function in a seperate ".f" file, with corresponding name. Main program is saved in "main.f".
+Added a make file (shell script) for the compilation of all ".f" files into "runprog.out".
+Added to each subroutine & function file a mapping section of subroutines which are called and called by.
+Added a subroutine summary file, 'subr_summ.txt', with the description & mapping of each subroutine & function.
+
+6.3.07:
+Directory last_ver:
+Added to shell script 'cpl_comprog' a check for the existence of commonfile and dimfile.
+Directory last_ver/breakup:
+Revised the make file, 'makecpl', to include different handles and checks.
+Cleared non-relevant old changes from subroutine files. 
+Cleared non-relevant remarks from subroutine files. 
+Revised and determined a consistent design of definition and declaration blocks for the subroutine files.
+Revised 'subr_summ.txt'. 
+
+13.3.07:
+Directory last_ver:
+Completed a benchmark test between the 'broken_comprog', the un-broken 'latest_comprog' version, the old 'centaur_hydroprog' version (used for 
+the centaur runs) and 'master_fanny'. All results are in: :/home/galahead/comprog_revisions/last_ver/benchmark.
+
+24.7.07:
+Directory last_ver/breakup:
+Added optional calculation of Vinet equation of state to EOS subroutine. Passed compilation & test run.
+Added optional calculation of Shanker equation of state to EOS subroutine. Passed compilation & test run.
+Added variable EOSF to comin file, commonfile and subroutines EOS and INPUT - switch between e.o.s options. 
+
+31.7.07:
+Directory last_ver/breakup:
+Dina's correction, regarding "too small timestep", incorporated into main.f (Section: 'Determine time step'). Passed compilation.
+Added PS,ALFP writing to MODEL subroutine - COMODO now contains information about hydrostatics & pore-size dist. Passed compilation & test run.
+Added PS,ALFP reading to INPUT subroutine - COMODI now contains information about hydrostatics & pore-size dist. Passed compilation & test run.
+Added "COMMON/PRINTP/PS(IMX)" declaration to MODEL and INPUT subroutines. 
+Added query "IF(NMODEL.LT.0)ALFP(I)=ALFPS" to subroutine SOURCE (Section: 'Calculate correction for...') - so ALFP will be read properly from COMODI.
+
+21.8.07:
+Directory last_ver/breakup:
+Change in subroutine MODEL - XRAD->XMRAD (so radioactive fraction will be written correctly to COMODO).
+
+3.9.07:
+Directory last_ver/breakup:
+Added output file COMLOG, to track important messages from COMOUT, without all the tables. timestep (NTIME) is added to each message in the file. 
+Added WRITE commands throughout the source files, to write to COMLOG. 
+
+6.9.07:
+Directory last_ver/breakup:
+Moved radionuclides variables and data to subroutine CONSTANTS (instead of SOURCE, in the DATA declaration).
+Added TAUR & HRAD to commonfile (radionuclides lifetime & energy per mass).
+Added FE60 data to radionuclides. Added entry to COMIN file. Revised input & output subroutines. 
+Passed compilation & test run. 
+
+18.11.07:
+Directory last_ver/breakup:
+Added hydrostatic convergence flag (EPSHY), to HYDRO, ENDSTP, INPUT, comin file and common file.
+Passed compilation & test run.
+
+8.2.10:
+Directory sources_aftercomp:
+Added variables XB, ROB and ROB0 to common file. 
+Function POR --> changed SUM to SUMX. 
+Function POR --> added variable ROB (header and POR calculation), to represent phases between amorphous (A) and crystalline (C).
+Added variable ROB and ROB0 to POR calls in DIVIS, SMERGE, GRIDEF, COMPOS, INPUT, ENDSTP.
+
+11.2.10:
+Subroutine COMPOS --> added varaibles SUBB, SUMB, SUMPB, FACNB, XB and ROB.
+Subroutine COMPOS --> re-arranged initialization of parameters. Removed DELVAP from initialization - doesn't seem to be used anywhere.
+Subroutine COMPOS --> re-arranged calculations of densities and mass fractions, mostly for clarity
+Added variable VAPFLA to common file. 
+Subroutine CONSTANTS --> added more volatile compounds, up to 9, with their physical/chemical characteristics.
+Subroutine DIVIS --> changed I to II in header, for variable declaration to be less confusing.
+Subroutine DIVIS --> added variable ROB to calculation (throughout).
+Subroutine DIVIS --> changed index IN to INN.
+Subroutine SMERGE --> changed I to II in header, for variable declaration to be less confusiong.
+Subroutine SMERGE --> added variable ROB to calculation (throughout).
+Subroutine SMERGE --> changed index IN to INN.
+Subroutine GRIDEF --> changed dimensions of GAS and RAD variables to be LG and LR, respectively.
+Subroutine GRIDEF --> changed IOUT from 5 to 10.
+Subroutine GRIDEF --> added variable ROB to calculation (throughout).
+Added variable ICLAT to common file.
+Subroutine MODEL --> added ICLAT, XB.
+
+16.2.10:
+Added variable VGFLA to common file.
+Subroutine MFLUX --> added varaible VGFLA and VAPFLA.
+Subroutine MFLUX --> added SUMFG and RAMPG variable to calculation of dust flux from the surface (for clarity).
+Subroutine SOURCE --> removed commented varaibles of radionuclides TAUR and HRAD (they were moved to CONSTANTS a while back).
+Subroutine SOURCE --> added ROB0 to the calculation of sublimation of volatiles.
+
+17.2.10:
+Subroutine EOS --> added variable P to the calling header, variable declaration and calculation of pressure PS (to account for the contribution of gas pressure to the hydrostatic balance).
+Subroutine HYDRO --> added variables P and G to the calling header. Also added these to the call to HYDRO in ENDSTP.
+Subroutine HYDRO --> changed all instances of IMAXP1 to IP.
+Subroutine HYDRO --> added variable P to EOS calls.
+
+18.2.10:
+Subroutine FLUX --> removed "impact"-related calculations. These are to be moved into a seperate subroutine, designated IMPACT. Added call to subroutine IMPACT (should be externally added later).
+Subroutine FLUX --> added ROB and XBI throughout the calculation. Added consideration of ICLAT and XBI to thermal conductivity calculation.
+Subroutine FLUX --> changed declaration of FACTOR to HERTZF.
+Subroutine FLUX --> Commented out call to SURFL (to comply with Dina's version).
+Subroutine FLUX --> added correction factor to the vapor flux calculation, as dependent on ZGAS and ROB0. Also added variables VAPFLA and VGFLA.
+Added variable PSOL to common file.
+Subroutine ENDSTP --> added variables FM, RHOT, PT, DMT and DVT to declaration and calculation. 
+Subroutine ENDSTP --> removed locatb and displot from variable declaration. Also removed DISTPR and reference to it (hour-angle scheme already covers MIDDAY/MIDNIGHT).
+Subroutine ENDSTP --> removed PLOTFI and DPLOFI.
+Subroutine ENDSTP --> removed calls to SETDIST.
+Removed subroutine SETDIST from the code.
+Subroutine ENDSTP --> added calculation of EOS coefficients and call to SETEOS (this subroutine should be externally added).
+
+22.2.10:
+Subroutine ENDSTP --> added ROB and XB throughout the calculation. Also added VAPFLA and VGFLA throughout the calculation.
+Subroutine ENDSTP --> added call to subroutine IMPACT (this subroutine should be externally added).
+Subroutine ENDSTP --> removed all references to GRAPH and graphics-related statements.
+Subroutine ENDSTP --> Commented out call to SURFL (to comply with Dina's version).
+Subroutine ENDSTP --> revised declaration and calculation statements to HANGLE files (no forced crude interpolation through setdist and loctab).
+Subroutine PRINT --> commented out calls to STRESS and TSTRESS.
+Subroutine PRINT --> removed variables INDN and XINDM from declaration (they don't seem to serve any purpose, except being printed out in subroutine TABLE, without any input).
+Subroutine PRINT --> removed variables INDN and XINDM from call to TABLE.
+Subroutine PRINT --> Commented out call to SURFL (to comply with Dina's version).
+Subroutine PRINT --> revised PRIMAT statements and subsequent calls to TABLE (so it will be clearer and comply with Dina's version).
+Subroutine TABLE --> removed AM and INDN from header declaration. Also removed their associated write statements.
+
+23.2.10:
+Subroutine INPUT --> changed declaration of XRADIN and XSGIN to be according to the LR and LG values (set in the dim file).
+Subroutine INPUT --> added declaration (as DATA) of CLIMIT to control the amount of gas in the clathrate hydrate phase, when building the initial model.
+Subroutine INPUT --> added XB, ROB, and ROB0 to the statements throughout.
+COMIN file --> added variable ZAC, for either non-crystallizing fraction of amorphous ice, or clathrate (crystalline) ice mass fraction.
+Subroutine INPUT --> added read of ZAC, from comin file. Also, added statements, according to ZAC, for XA, XB, XC and ICLAT, according to ZAC.
+Subroutine INPUT --> added ZGAS to statements of trapped gas in amorphous ice.
+Subroutine CONSTANTS --> added variable YEAR, to represent 1 year in seconds. Also added to common file.
+Subroutine CONSTANTS --> added variable SLM, to represent (solar luminosity)/(4*pi), as in subroutine INPUT (calculation of Q). Also added to common file.
+COMIN file --> added statements to Z and XSGI, for the gas species, and to XRAD, for the radionuclides, so that they correlate with LG=LR=10 in the dim file. 
+
+3.3.10:
+Subroutine IMPACT --> added to the code and to the compile file.
+Removed SETDIST from the compile file.
+COMIN file --> removed all graphics-related variables. Also removed graphics-related variables from the common file.
+Subroutine SETEOS --> added to the code and to the compile file. 
+Subroutine ENDSTP --> added variable RO0FAC, as the ratio of RO0 (EOS parameter) to the central density, RHO(2) - Input parameter to find PK, for setting the EOS coefficient.
+                      Also added RO0FAC to INPUT and COMIN file (instead of RO0 and PK) and to the common file (together with RO0 and PK).
+Subroutine FLUX --> moved HERTZF to COMIN file, to be given as input by the user. Also added to INPUT (read-in) and the common file. 
+Subroutine ENDSTP --> moved TIMAX to subroutine CONSTANTS. Also updated TIMAX into the common file.
+
+4.3.10:
+MAIN --> renamed TMIN to TIMIN and moved it to subroutine constants. Also updated TIMIN into the common file.
+MAIN --> removed COMIDDAY and COMIDNIGHT. Also removed from run script.
+Added HOUR (defined in ENDSTP) to commonfile. 
+Added RUNM to INPUT and comin file --> to select run mode (single element or quasi-3D). 
+Added HANGN to INPUT, MAIN, comin file and common file --> number of hour angle elements to be calculated during a simulation run. 
+MAIN --> added statements to open hangle files, according to the RUNM and HANGN parameters from the comin file.
+
+8.3.10:
+Subroutine ENDSTP --> Changed the writing statements to the hangle files (determining JJ).
+Subroutine ENDSTP --> added PORCOL and POREXP variables to account for 'collapse' or 'expansion', in determination of porosity limits.
+Added PORCOL and POREXP to the comin file, common file and subroutine INPUT.
+Subroutine THCOND --> moved CONDW from data declaration to subroutine CONSTANTS. Also added CONDW to common file.
+
+9.3.10:
+Subroutine SOURCE --> moved ICORR to comin file. Also updated common file and subroutine INPUT. Now it is a user input whether or not to calculate SVR correction. 
+Subroutine SOURCE --> removed KIN from data declaration and from statements (no apparent need for it...).
+Subroutine SOURCE --> moved HAMC, ATAU, EXPTAU and TMIN from data declaration to subroutine CONSTANTS. Also, updated these varaibles in the common file.
+Subroutine MFLUX --> removed NTIM from data declaration and statements. Replaced with demand for NTIME>0.
+Subroutine MFLUX --> removed KIN from data declaration and from statements (no apparent need for it...).
+Subroutine INPUT --> moved CLIMIT from data declaration to be read as input from the comin file. 
+
+10.3.10:
+All changes passed debugging and compilation. 
+
+11.3.10:
+Revised and corrected all error messages, so that the comout and comlog files will be more clear.
+Added DVS=DV(IMAXP1) (from INPUT) to common file, so that the GRIDEF call (in ENDSTP) will be correct.
+Passed compilation.
+
+12.3.10:
+Corrected several error messages.
+Subroutine IMPACT --> moved impact-related parameters from data declaration to comin file. Also updated these variables in the common file. 
+COMIN file --> total kinetic energy input is given as fraction of DI total kinetic energy, stated in subroutine CONSTANTS as ENTOTDI. Also updated ENTOTDI to common file.
+Subroutine INPUT --> added read-in statements for impact-related parameters.
+Subroutine IMPACT --> changed IMPFLAG to IIMPAC and moved it to the comin file. Also updated common file and INPUT. Changed calls to IMPACT in FLUX and ENDSTP. 
+
+15.3.10:
+Subroutine ENDSTP --> moved UTOTP from data declaration to 'initialization' statements at the beginning of the subroutine.
+Subroutine ENDSTP --> removed NPLOT from data declaration. It does not seem to do anything.
+Subroutine ENDSTP --> removed NORBPREV from the data declaration. It is already set in the 'initialization' statements at the beginning of the subroutine.
+Subroutine THCOND --> moved parameters for correction due to fractal structure from the data declaration to the statements.
+Subroutine PRINT --> removed JPRI from data declaration and updated it at the beginning of the statements.

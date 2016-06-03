@@ -1,0 +1,27 @@
+#!/bin/csh -f
+# A script to execute removal of result files
+# Use: ./rmv_comprog
+
+echo "Do you wish to remove all result files (incl. comodi) ? (y/n)"
+set answer = $<
+if ( $answer == "y" ) then
+   echo "Set suffix of result files to be removed:"
+   set suffix = $<
+   rm comout"$suffix" complot"$suffix" comprof"$suffix" comodi"$suffix" comodo"$suffix" comlog"$suffix"
+   rm hang* 
+   echo "Removal complete."
+   exit
+endif
+
+echo "Do you wish to remove all result files (excl. comodi) ? (y/n)"
+set answer = $<
+if ( $answer == "y" ) then
+   echo "Set suffix of result files to be removed:"
+   set suffix = $<
+   rm comout"$suffix" complot"$suffix" comprof"$suffix" comodo"$suffix" comlog"$suffix" 
+   rm hang*
+   echo "Removal complete, except comodi."
+   exit
+endif
+
+

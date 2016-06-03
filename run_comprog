@@ -1,0 +1,17 @@
+#!/bin/csh -f
+# A script to execute the comprog run
+# Use: ./run_comprog comin.*
+
+set arg1 = $1
+if ( $#argv != 1) then
+   echo "Input file comin.* does not appear. Please check statement. Exiting."
+   exit
+endif
+if ( ! -e $1 ) then
+   echo "Input file comin.* does not appear. Please check statement. Exiting."
+   exit
+endif
+echo "Set suffix for output files (press enter for no suffix):"
+set s = $<
+time nohup ./runprog.out $arg1 comout"$s" complot"$s" comprof"$s" comodi"$s" comodo"$s" comlog"$s" &
+ps 
